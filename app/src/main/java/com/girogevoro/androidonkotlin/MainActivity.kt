@@ -29,6 +29,18 @@ class MainActivity : AppCompatActivity() {
         Log.d(TAG,copy.toString())
 
 
+        for(i in 1..8){
+            Log.d(TAG, "$i")
+        }
+
+        for(i in 5 until 8 step  3){
+            Log.d(TAG,"-------------------")
+        }
+
+        for(i in 3 downTo 1){
+            Log.d(TAG, "+")
+        }
+
         //Log.d(TAG, )
     }
 }
