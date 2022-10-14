@@ -5,7 +5,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.girogevoro.androidonkotlin.R
 import com.girogevoro.androidonkotlin.databinding.FragmentWeatherListBinding
@@ -46,12 +45,9 @@ class WeatherListFragment : Fragment(), OnItemClick {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel = ViewModelProvider(this).get(WeatherListViewModel::class.java)
-        viewModel.getLiveData().observe(viewLifecycleOwner, object : Observer<AppState> {
-            override fun onChanged(appState: AppState) {
-                renderData(appState)
-            }
-        })
+        viewModel = ViewModelProvider(this).get(WeatherListViewModel::class.java).apply {
+            getLiveData().observe(viewLifecycleOwner) { appState -> renderData(appState) }
+        }
 
         binding.weatherListFragmentFAB.setOnClickListener {
             isRussian = !isRussian
