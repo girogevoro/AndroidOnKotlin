@@ -3,7 +3,7 @@ package com.girogevoro.androidonkotlin.model
 import com.girogevoro.androidonkotlin.domain.Weather
 
 class RepositoryRemoteImpl : Repository {
-    override fun getListWeather(location: Location): List<Weather> {
+    override fun getListWeather(): List<Weather> {
         return listOf(Weather())
     }
 

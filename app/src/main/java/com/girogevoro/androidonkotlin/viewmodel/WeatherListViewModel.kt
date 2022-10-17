@@ -4,7 +4,6 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.girogevoro.androidonkotlin.model.Location
 import com.girogevoro.androidonkotlin.model.Repository
 import com.girogevoro.androidonkotlin.model.RepositoryLocalImpl
 import com.girogevoro.androidonkotlin.model.RepositoryRemoteImpl
@@ -29,12 +28,12 @@ class WeatherListViewModel : ViewModel() {
         }
     }
 
-    fun sentRequest(location: Location) {
+    fun sentRequest() {
         liveData.value = AppState.Loading
-        if((1..3).random() == 9){
+        if((1..3).random() == 2){
 
         }else{
-            liveData.postValue(AppState.SuccessMulti(repository.getListWeather(location)))
+            liveData.postValue(AppState.Success(repository.getWeather(55.755826, 37.617299900000035)))
         }
     }
 
