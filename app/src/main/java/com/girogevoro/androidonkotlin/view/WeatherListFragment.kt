@@ -12,6 +12,7 @@ import com.girogevoro.androidonkotlin.domain.Weather
 import com.girogevoro.androidonkotlin.model.Location
 import com.girogevoro.androidonkotlin.viewmodel.WeatherListViewModel
 import com.girogevoro.androidonkotlin.viewmodel.data.AppState
+import com.google.android.material.snackbar.Snackbar
 
 class WeatherListFragment : Fragment(), OnItemClick {
 
@@ -65,7 +66,9 @@ class WeatherListFragment : Fragment(), OnItemClick {
 
     private fun renderData(appState: AppState) {
         when (appState) {
-            is AppState.Error -> {}
+            is AppState.Error -> {
+                binding.root.snackbar(R.string.error , Snackbar.LENGTH_SHORT)
+            }
             AppState.Loading -> {}
             is AppState.Success -> {
                 val result = appState.weatherData
@@ -85,4 +88,10 @@ class WeatherListFragment : Fragment(), OnItemClick {
             .commit()
     }
 
+    fun View.snackbar(message:String, duratinon:Int){
+        Snackbar.make(this, message ,duratinon).show()
+    }
+    fun View.snackbar(message:Int, duratinon:Int){
+        Snackbar.make(this, message ,duratinon).show()
+    }
 }
