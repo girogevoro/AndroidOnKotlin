@@ -5,7 +5,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.girogevoro.androidonkotlin.R
 import com.girogevoro.androidonkotlin.databinding.FragmentWeatherListBinding
@@ -13,6 +12,7 @@ import com.girogevoro.androidonkotlin.domain.Weather
 import com.girogevoro.androidonkotlin.model.Location
 import com.girogevoro.androidonkotlin.viewmodel.WeatherListViewModel
 import com.girogevoro.androidonkotlin.viewmodel.data.AppState
+import com.google.android.material.snackbar.Snackbar
 
 class WeatherListFragment : Fragment(), OnItemClick {
 
@@ -46,12 +46,9 @@ class WeatherListFragment : Fragment(), OnItemClick {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel = ViewModelProvider(this).get(WeatherListViewModel::class.java)
-        viewModel.getLiveData().observe(viewLifecycleOwner, object : Observer<AppState> {
-            override fun onChanged(appState: AppState) {
-                renderData(appState)
-            }
-        })
+        viewModel = ViewModelProvider(this).get(WeatherListViewModel::class.java).apply {
+            getLiveData().observe(viewLifecycleOwner) { appState -> renderData(appState) }
+        }
 
         binding.weatherListFragmentFAB.setOnClickListener {
             isRussian = !isRussian
@@ -69,7 +66,9 @@ class WeatherListFragment : Fragment(), OnItemClick {
 
     private fun renderData(appState: AppState) {
         when (appState) {
-            is AppState.Error -> {}
+            is AppState.Error -> {
+                binding.root.snackbar(R.string.error , Snackbar.LENGTH_SHORT)
+            }
             AppState.Loading -> {}
             is AppState.Success -> {
                 val result = appState.weatherData
@@ -89,4 +88,10 @@ class WeatherListFragment : Fragment(), OnItemClick {
             .commit()
     }
 
+    fun View.snackbar(message:String, duratinon:Int){
+        Snackbar.make(this, message ,duratinon).show()
+    }
+    fun View.snackbar(message:Int, duratinon:Int){
+        Snackbar.make(this, message ,duratinon).show()
+    }
 }

@@ -31,8 +31,8 @@ class WeatherListViewModel : ViewModel() {
 
     fun sentRequest(location: Location) {
         liveData.value = AppState.Loading
-        if((1..3).random() == 9){
-
+        if((1..3).random() == 1){
+            liveData.postValue(AppState.Error(Throwable("error")))
         }else{
             liveData.postValue(AppState.SuccessMulti(repository.getListWeather(location)))
         }
