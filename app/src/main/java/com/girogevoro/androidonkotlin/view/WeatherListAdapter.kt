@@ -5,8 +5,9 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.girogevoro.androidonkotlin.databinding.FragmentWeatherListRecyclerItemBinding
 import com.girogevoro.androidonkotlin.domain.Weather
+import com.google.gson.annotations.Until
 
-class WeatherListAdapter(private val dataList: List<Weather>, private val pressItem: OnItemClick) :
+class WeatherListAdapter(private val dataList: List<Weather>, private val pressItem: (weather:Weather)->Any) :
     RecyclerView.Adapter<WeatherListAdapter.WeatherViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): WeatherViewHolder {
@@ -29,7 +30,7 @@ class WeatherListAdapter(private val dataList: List<Weather>, private val pressI
             with(binding) {
                 cityName.text = weather.city.name
                 root.setOnClickListener {
-                    pressItem.onItemClick(weather)
+                    pressItem(weather)
                 }
             }
         }
