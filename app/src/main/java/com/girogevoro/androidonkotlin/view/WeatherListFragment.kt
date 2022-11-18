@@ -13,8 +13,9 @@ import com.girogevoro.androidonkotlin.model.Location
 import com.girogevoro.androidonkotlin.viewmodel.WeatherListViewModel
 import com.girogevoro.androidonkotlin.viewmodel.data.AppState
 import com.google.android.material.snackbar.Snackbar
+import com.google.gson.annotations.Until
 
-class WeatherListFragment : Fragment(), OnItemClick {
+class WeatherListFragment : Fragment() {
 
     companion object {
         fun newInstance() = WeatherListFragment()
@@ -75,18 +76,21 @@ class WeatherListFragment : Fragment(), OnItemClick {
             }
             is AppState.SuccessMulti -> {
                 binding.mainFragmentRecyclerView.adapter =
-                    WeatherListAdapter(appState.weatherList, this)
+                    WeatherListAdapter(appState.weatherList) { weather ->
+                            requireActivity().supportFragmentManager.beginTransaction()
+                                .hide(this@WeatherListFragment)
+                                .add(R.id.container, DetailsFragment.newInstance(weather))
+                                .addToBackStack("")
+                                .commit()
+
+                    }
             }
         }
 
 
     }
 
-    override fun onItemClick(weather: Weather) {
-        requireActivity().supportFragmentManager.beginTransaction().hide(this)
-            .add(R.id.container, DetailsFragment.newInstance(weather)).addToBackStack("")
-            .commit()
-    }
+
 
     fun View.snackbar(message:String, duratinon:Int){
         Snackbar.make(this, message ,duratinon).show()
