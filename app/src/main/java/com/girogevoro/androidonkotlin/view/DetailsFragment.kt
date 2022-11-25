@@ -11,6 +11,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
+import com.bumptech.glide.Glide
 import com.girogevoro.androidonkotlin.R
 import com.girogevoro.androidonkotlin.databinding.FragmentDetailsBinding
 import com.girogevoro.androidonkotlin.domain.*
@@ -112,6 +113,9 @@ class DetailsFragment : Fragment() {
             temperatureValue.text = weather.temperature.toString()
             feelsLikeValue.text = weather.feelsLike.toString()
 
+            Glide.with(requireActivity())
+                .load("https://freepngimg.com/thumb/city/36275-3-city-hd.png")
+                .into(headerIcon);
 
         }
     }
