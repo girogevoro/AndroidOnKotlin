@@ -4,12 +4,12 @@ import android.app.IntentService
 import android.content.Intent
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.girogevoro.androidonkotlin.BuildConfig
+
 import com.girogevoro.androidonkotlin.model.dto.WeatherDTO
 import com.girogevoro.androidonkotlin.view.*
 import com.google.gson.Gson
 import java.io.BufferedReader
 import java.io.InputStreamReader
-import java.net.HttpURLConnection
 import java.net.MalformedURLException
 import java.net.URL
 import java.util.stream.Collectors
