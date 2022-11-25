@@ -13,6 +13,7 @@ import com.girogevoro.androidonkotlin.model.Location
 import com.girogevoro.androidonkotlin.viewmodel.WeatherListViewModel
 import com.girogevoro.androidonkotlin.viewmodel.data.AppState
 import com.google.android.material.snackbar.Snackbar
+import com.google.gson.annotations.Until
 
 class WeatherListFragment : Fragment() {
 
