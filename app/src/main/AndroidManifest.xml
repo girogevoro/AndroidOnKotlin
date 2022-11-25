@@ -27,6 +27,9 @@
             </intent-filter>
         </activity>
 
+
+        <service android:name=".domain.DetailsService" />
+
     </application>
 
 </manifest>
