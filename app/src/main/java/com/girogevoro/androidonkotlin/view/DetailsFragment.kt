@@ -9,9 +9,18 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
+import com.bumptech.glide.Glide
+import com.girogevoro.androidonkotlin.R
 import com.girogevoro.androidonkotlin.databinding.FragmentDetailsBinding
 import com.girogevoro.androidonkotlin.domain.*
+import com.girogevoro.androidonkotlin.model.dto.WeatherDTO
+import com.girogevoro.androidonkotlin.utils.hide
+import com.girogevoro.androidonkotlin.utils.show
+import com.girogevoro.androidonkotlin.utils.showSnackBar
+import com.girogevoro.androidonkotlin.viewmodel.DetailsViewModel
+import com.girogevoro.androidonkotlin.viewmodel.data.AppState
 
 const val DETAILS_INTENT_FILTER = "DETAILS INTENT FILTER"
 const val DETAILS_LOAD_RESULT_EXTRA = "LOAD RESULT"
@@ -40,12 +49,13 @@ class DetailsFragment : Fragment() {
 
     private lateinit var city: City
 
+    private val viewModel: DetailsViewModel by lazy {
+        ViewModelProvider(this).get(DetailsViewModel::class.java)
+    }
+
     override fun onDestroy() {
         super.onDestroy()
         _binding = null
-        context?.let {
-            LocalBroadcastManager.getInstance(it).unregisterReceiver(loadResultsReceiver)
-        }
     }
 
     override fun onCreateView(
@@ -53,10 +63,6 @@ class DetailsFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        requireActivity().let {
-            LocalBroadcastManager.getInstance(it)
-                .registerReceiver(loadResultsReceiver, IntentFilter(DETAILS_INTENT_FILTER))
-        }
         _binding = FragmentDetailsBinding.inflate(inflater)
         return binding.root
     }
@@ -66,57 +72,51 @@ class DetailsFragment : Fragment() {
 
         val weather = arguments?.getParcelable<Weather>(BUNDLE_WEATHER_EXTRA) ?: Weather()
         city = weather.city
-        getWeather()
+
+        viewModel.getLiveData().observe(viewLifecycleOwner) { renderData(it) }
+        viewModel.getWeatherFromRemoteSource(city.lat, city.lon)
     }
 
 
-    private fun renderData(weather: Weather) {
+    private fun renderData(appState: AppState) {
+        binding.mainView.show()
+        binding.loadingLayout.hide()
+
+        when (appState) {
+            is AppState.SuccessMulti -> {
+                binding.mainView.show()
+                binding.loadingLayout.hide()
+                setWeather(appState.weatherList[0])
+            }
+            is AppState.Loading -> {
+                binding.mainView.hide()
+                binding.loadingLayout.show()
+            }
+            is AppState.Error -> {
+                binding.mainView.show()
+                binding.loadingLayout.hide()
+                binding.mainView.showSnackBar(
+                    getString(R.string.error),
+                    getString(R.string.reload)
+                ) {
+                    viewModel.getWeatherFromRemoteSource(city.lat, city.lon)
+                }
+            }
+        }
+
+    }
+
+    private fun setWeather(weather: Weather) {
         with(binding) {
             cityName.text = city.name
+            "${city.lat}/${city.lon}".also { cityCoordinates.text = it }
             temperatureValue.text = weather.temperature.toString()
             feelsLikeValue.text = weather.feelsLike.toString()
-            "${city.lat}/${city.lon}".also { cityCoordinates.text = it }
-        }
 
-    }
+            Glide.with(requireActivity())
+                .load("https://freepngimg.com/thumb/city/36275-3-city-hd.png")
+                .into(headerIcon);
 
-
-    private fun getWeather() {
-//        binding.mainView.hide()
-//        binding.loadingLayout.show()
-        context?.let {
-            it.startService(Intent(it, DetailsService::class.java).apply {
-                putExtra(
-                    LATITUDE_EXTRA,
-                    city.lat
-                )
-                putExtra(
-                    LONGITUDE_EXTRA,
-                    city.lon
-                )
-            })
-        }
-    }
-
-    private val loadResultsReceiver: BroadcastReceiver = object : BroadcastReceiver() {
-        override fun onReceive(context: Context, intent: Intent) {
-            when (intent.getStringExtra(DETAILS_LOAD_RESULT_EXTRA)) {
-                DETAILS_INTENT_EMPTY_EXTRA -> TODO(PROCESS_ERROR)
-                DETAILS_DATA_EMPTY_EXTRA -> TODO(PROCESS_ERROR)
-                DETAILS_RESPONSE_EMPTY_EXTRA -> TODO(PROCESS_ERROR)
-                DETAILS_REQUEST_ERROR_EXTRA -> TODO(PROCESS_ERROR)
-                DETAILS_REQUEST_ERROR_MESSAGE_EXTRA -> TODO(PROCESS_ERROR)
-                DETAILS_URL_MALFORMED_EXTRA -> TODO(PROCESS_ERROR)
-                DETAILS_RESPONSE_SUCCESS_EXTRA -> renderData(
-                    Weather().apply {
-                        temperature = intent.getIntExtra(
-                            DETAILS_TEMP_EXTRA, TEMP_INVALID
-                        )
-                        feelsLike = intent.getIntExtra(DETAILS_FEELS_LIKE_EXTRA, FEELS_LIKE_INVALID)
-                    }
-                )
-                else -> TODO(PROCESS_ERROR)
-            }
         }
     }
 
