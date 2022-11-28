@@ -2,10 +2,10 @@ package com.girogevoro.androidonkotlin.viewmodel
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.girogevoro.androidonkotlin.model.repository.DetailsRepository
-import com.girogevoro.androidonkotlin.model.repository.DetailsRepositoryImpl
-import com.girogevoro.androidonkotlin.model.repository.RemoteDataSource
+import com.girogevoro.androidonkotlin.App.Companion.getHistoryDao
+import com.girogevoro.androidonkotlin.domain.Weather
 import com.girogevoro.androidonkotlin.model.dto.WeatherDTO
+import com.girogevoro.androidonkotlin.model.repository.*
 import com.girogevoro.androidonkotlin.utils.convertDtoToModel
 import com.girogevoro.androidonkotlin.viewmodel.data.AppState
 import retrofit2.Call
@@ -19,13 +19,18 @@ private const val CORRUPTED_DATA = "Неполные данные"
 
 class DetailsViewModel(
     private val detailsLiveData: MutableLiveData<AppState> = MutableLiveData(),
-    private val detailsRepositoryImpl: DetailsRepository = DetailsRepositoryImpl(RemoteDataSource())
+    private val detailsRepositoryImpl: DetailsRepository = DetailsRepositoryImpl(RemoteDataSource()),
+    private val historyRepository: LocalRepository = LocalRepositoryImpl(getHistoryDao())
 ) : ViewModel() {
     fun getLiveData() = detailsLiveData
 
     fun getWeatherFromRemoteSource(lat: Double, lon: Double) {
         detailsLiveData.value = AppState.Loading
         detailsRepositoryImpl.getWeatherDetailsFromServer(lat, lon, callBack)
+    }
+
+    fun saveCityToDb(weather: Weather) {
+        historyRepository.saveEntity(weather)
     }
 
     private val callBack = object : Callback<WeatherDTO> {
