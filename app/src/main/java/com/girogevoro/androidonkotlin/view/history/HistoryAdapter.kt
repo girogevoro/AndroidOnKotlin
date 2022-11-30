@@ -3,7 +3,8 @@ package com.girogevoro.androidonkotlin.view.history
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.girogevoro.androidonkotlin.databinding.HistoryRecyclerItemBinding
+import com.girogevoro.androidonkotlin.databinding.FragmentHistoryRecyclerItemBinding
+
 import com.girogevoro.androidonkotlin.domain.Weather
 
 class HistoryAdapter : RecyclerView.Adapter<HistoryAdapter.HistoryViewHolder>() {
@@ -17,7 +18,7 @@ class HistoryAdapter : RecyclerView.Adapter<HistoryAdapter.HistoryViewHolder>() 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HistoryViewHolder {
         val binding =
-            HistoryRecyclerItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+            FragmentHistoryRecyclerItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return HistoryViewHolder(binding)
     }
 
@@ -27,7 +28,7 @@ class HistoryAdapter : RecyclerView.Adapter<HistoryAdapter.HistoryViewHolder>() 
 
     override fun getItemCount() = data.size
 
-    inner class HistoryViewHolder(private val binding: HistoryRecyclerItemBinding) :
+    inner class HistoryViewHolder(private val binding: FragmentHistoryRecyclerItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
         fun bind(data: Weather) {
