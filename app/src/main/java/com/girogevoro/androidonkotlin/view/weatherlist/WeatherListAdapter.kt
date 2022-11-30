@@ -1,11 +1,10 @@
-package com.girogevoro.androidonkotlin.view
+package com.girogevoro.androidonkotlin.view.weatherlist
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.girogevoro.androidonkotlin.databinding.FragmentWeatherListRecyclerItemBinding
 import com.girogevoro.androidonkotlin.domain.Weather
-import com.google.gson.annotations.Until
 
 class WeatherListAdapter(private val dataList: List<Weather>, private val pressItem: (weather:Weather)->Any) :
     RecyclerView.Adapter<WeatherListAdapter.WeatherViewHolder>() {

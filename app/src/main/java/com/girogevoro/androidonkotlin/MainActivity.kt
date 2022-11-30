@@ -1,4 +1,4 @@
-package com.girogevoro.androidonkotlin.view
+package com.girogevoro.androidonkotlin
 
 import android.content.Intent
 import android.content.IntentFilter
@@ -6,9 +6,10 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
-import com.girogevoro.androidonkotlin.R
 import com.girogevoro.androidonkotlin.databinding.ActivityMainBinding
 import com.girogevoro.androidonkotlin.domain.ConnectivityBroadcastReceiver
+import com.girogevoro.androidonkotlin.view.history.HistoryFragment
+import com.girogevoro.androidonkotlin.view.weatherlist.WeatherListFragment
 
 private val receiver = ConnectivityBroadcastReceiver()
 

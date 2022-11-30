@@ -1,4 +1,4 @@
-package com.girogevoro.androidonkotlin.view
+package com.girogevoro.androidonkotlin.view.history
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -11,8 +11,7 @@ import com.girogevoro.androidonkotlin.databinding.HistoryFragmentBinding
 import com.girogevoro.androidonkotlin.utils.hide
 import com.girogevoro.androidonkotlin.utils.show
 import com.girogevoro.androidonkotlin.utils.showSnackBar
-import com.girogevoro.androidonkotlin.viewmodel.HistoryViewModel
-import com.girogevoro.androidonkotlin.viewmodel.data.AppState
+import com.girogevoro.androidonkotlin.model.data.AppState
 
 class HistoryFragment : Fragment() {
 

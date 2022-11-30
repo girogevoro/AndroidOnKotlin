@@ -1,4 +1,4 @@
-package com.girogevoro.androidonkotlin.viewmodel
+package com.girogevoro.androidonkotlin.view.weatherlist
 
 import android.util.Log
 import androidx.lifecycle.LiveData
@@ -8,7 +8,7 @@ import com.girogevoro.androidonkotlin.model.Location
 import com.girogevoro.androidonkotlin.model.Repository
 import com.girogevoro.androidonkotlin.model.RepositoryLocalImpl
 import com.girogevoro.androidonkotlin.model.RepositoryRemoteImpl
-import com.girogevoro.androidonkotlin.viewmodel.data.AppState
+import com.girogevoro.androidonkotlin.model.data.AppState
 
 class WeatherListViewModel : ViewModel() {
     private val TAG = "TAG"

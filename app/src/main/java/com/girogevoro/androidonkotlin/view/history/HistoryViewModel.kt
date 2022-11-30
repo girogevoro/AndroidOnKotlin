@@ -1,11 +1,11 @@
-package com.girogevoro.androidonkotlin.viewmodel
+package com.girogevoro.androidonkotlin.view.history
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.girogevoro.androidonkotlin.App.Companion.getHistoryDao
 import com.girogevoro.androidonkotlin.model.repository.LocalRepository
 import com.girogevoro.androidonkotlin.model.repository.LocalRepositoryImpl
-import com.girogevoro.androidonkotlin.viewmodel.data.AppState
+import com.girogevoro.androidonkotlin.model.data.AppState
 
 class HistoryViewModel(
     val historyLiveData: MutableLiveData<AppState> = MutableLiveData(),

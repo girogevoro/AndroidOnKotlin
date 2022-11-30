@@ -1,4 +1,4 @@
-package com.girogevoro.androidonkotlin.view
+package com.girogevoro.androidonkotlin.view.history
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
