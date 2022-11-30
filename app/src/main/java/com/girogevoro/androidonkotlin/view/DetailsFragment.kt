@@ -88,6 +88,11 @@ class DetailsFragment : Fragment() {
                 binding.loadingLayout.hide()
                 setWeather(appState.weatherList[0])
             }
+            is AppState.Success -> {
+                binding.mainView.show()
+                binding.loadingLayout.hide()
+                setWeather(appState.weatherData)
+            }
             is AppState.Loading -> {
                 binding.mainView.hide()
                 binding.loadingLayout.show()
@@ -115,9 +120,13 @@ class DetailsFragment : Fragment() {
 
             Glide.with(requireActivity())
                 .load("https://freepngimg.com/thumb/city/36275-3-city-hd.png")
-                .into(headerIcon);
-
+                .into(headerIcon)
+            saveCity(city, weather)
         }
+    }
+
+    private fun saveCity(city: City, weather: Weather){
+        viewModel.saveCityToDb(Weather(city, weather.temperature, weather.feelsLike, weather.condition))
     }
 
 

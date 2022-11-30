@@ -1,5 +1,6 @@
 package com.girogevoro.androidonkotlin.view
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -15,7 +16,10 @@ import com.girogevoro.androidonkotlin.viewmodel.data.AppState
 import com.google.android.material.snackbar.Snackbar
 import com.google.gson.annotations.Until
 
+private const val IS_RUSSIAN_KEY = "LIST_OF_RUSSIAN_KEY"
+
 class WeatherListFragment : Fragment() {
+
 
     companion object {
         fun newInstance() = WeatherListFragment()
@@ -50,19 +54,45 @@ class WeatherListFragment : Fragment() {
         viewModel = ViewModelProvider(this).get(WeatherListViewModel::class.java).apply {
             getLiveData().observe(viewLifecycleOwner) { appState -> renderData(appState) }
         }
+        showListOfTowns()
 
         binding.weatherListFragmentFAB.setOnClickListener {
             isRussian = !isRussian
             if (isRussian) {
                 viewModel.sentRequest(Location.Russian)
-                binding.weatherListFragmentFAB.setImageResource(R.drawable.ic_russia)
+                binding.weatherListFragmentFAB.setImageResource(R.drawable.ic_earth)
             } else {
                 viewModel.sentRequest(Location.World)
-                binding.weatherListFragmentFAB.setImageResource(R.drawable.ic_earth)
+                binding.weatherListFragmentFAB.setImageResource(R.drawable.ic_russia)
+            }
+            saveListOfTowns()
+        }
+    }
+
+    private fun showListOfTowns() {
+        activity?.let {
+            isRussian = it.getPreferences(Context.MODE_PRIVATE).getBoolean(IS_RUSSIAN_KEY, true)
+        }
+        showWeatherDataSet()
+    }
+
+    private fun showWeatherDataSet() {
+        if (isRussian) {
+            viewModel.getWeatherFromLocalSourceRus()
+            binding.weatherListFragmentFAB.setImageResource(R.drawable.ic_earth)
+        } else {
+            viewModel.getWeatherFromLocalSourceWorld()
+            binding.weatherListFragmentFAB.setImageResource(R.drawable.ic_russia)
+        }
+    }
+
+    private fun saveListOfTowns() {
+        activity?.let {
+            with(it.getPreferences(Context.MODE_PRIVATE).edit()) {
+                putBoolean(IS_RUSSIAN_KEY, isRussian)
+                apply()
             }
         }
-
-        viewModel.sentRequest(Location.Russian)
     }
 
     private fun renderData(appState: AppState) {

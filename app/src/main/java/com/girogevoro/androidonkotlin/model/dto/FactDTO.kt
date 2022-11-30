@@ -1,6 +1,6 @@
 package com.girogevoro.androidonkotlin.model.dto
 
-data class Fact(
+data class FactDTO(
     val condition: String,
     val daytime: String,
     val feels_like: Int,

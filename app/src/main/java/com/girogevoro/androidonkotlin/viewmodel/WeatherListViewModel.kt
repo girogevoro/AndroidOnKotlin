@@ -28,8 +28,12 @@ class WeatherListViewModel : ViewModel() {
             RepositoryLocalImpl()
         }
     }
+    fun getWeatherFromLocalSourceRus() = sentRequest(Location.Russian)
+
+    fun getWeatherFromLocalSourceWorld() = sentRequest(Location.World)
 
     fun sentRequest(location: Location) {
+
         liveData.value = AppState.Loading
         if((1..3).random() == 6){
             liveData.postValue(AppState.Error(Throwable("error")))
