@@ -7,5 +7,6 @@
     <string name="error">Error</string>
     <string name="reload">Reload</string>
     <string name="menu_title_history">history</string>
+    <string name="contacts">contacts</string>
 
 </resources>

@@ -120,10 +120,10 @@ class WeatherListFragment : Fragment() {
 
 
 
-    fun View.snackbar(message:String, duratinon:Int){
-        Snackbar.make(this, message ,duratinon).show()
+    fun View.snackbar(message:String, duration:Int){
+        Snackbar.make(this, message ,duration).show()
     }
-    fun View.snackbar(message:Int, duratinon:Int){
-        Snackbar.make(this, message ,duratinon).show()
+    fun View.snackbar(message:Int, duration:Int){
+        Snackbar.make(this, message ,duration).show()
     }
 }
