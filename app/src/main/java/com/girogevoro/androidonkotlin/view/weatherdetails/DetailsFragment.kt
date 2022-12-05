@@ -1,26 +1,20 @@
-package com.girogevoro.androidonkotlin.view
+package com.girogevoro.androidonkotlin.view.weatherdetails
 
-import android.content.BroadcastReceiver
-import android.content.Context
-import android.content.Intent
-import android.content.IntentFilter
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.bumptech.glide.Glide
 import com.girogevoro.androidonkotlin.R
 import com.girogevoro.androidonkotlin.databinding.FragmentDetailsBinding
-import com.girogevoro.androidonkotlin.domain.*
-import com.girogevoro.androidonkotlin.model.dto.WeatherDTO
+import com.girogevoro.androidonkotlin.domain.City
+import com.girogevoro.androidonkotlin.domain.Weather
 import com.girogevoro.androidonkotlin.utils.hide
 import com.girogevoro.androidonkotlin.utils.show
 import com.girogevoro.androidonkotlin.utils.showSnackBar
-import com.girogevoro.androidonkotlin.viewmodel.DetailsViewModel
-import com.girogevoro.androidonkotlin.viewmodel.data.AppState
+import com.girogevoro.androidonkotlin.model.data.AppState
 
 const val DETAILS_INTENT_FILTER = "DETAILS INTENT FILTER"
 const val DETAILS_LOAD_RESULT_EXTRA = "LOAD RESULT"

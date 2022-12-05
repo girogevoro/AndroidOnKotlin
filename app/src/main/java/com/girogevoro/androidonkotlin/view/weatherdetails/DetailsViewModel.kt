@@ -1,4 +1,4 @@
-package com.girogevoro.androidonkotlin.viewmodel
+package com.girogevoro.androidonkotlin.view.weatherdetails
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -7,7 +7,7 @@ import com.girogevoro.androidonkotlin.domain.Weather
 import com.girogevoro.androidonkotlin.model.dto.WeatherDTO
 import com.girogevoro.androidonkotlin.model.repository.*
 import com.girogevoro.androidonkotlin.utils.convertDtoToModel
-import com.girogevoro.androidonkotlin.viewmodel.data.AppState
+import com.girogevoro.androidonkotlin.model.data.AppState
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response

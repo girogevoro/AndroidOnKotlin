@@ -1,4 +1,4 @@
-package com.girogevoro.androidonkotlin.viewmodel.data
+package com.girogevoro.androidonkotlin.model.data
 
 import com.girogevoro.androidonkotlin.domain.Weather
 

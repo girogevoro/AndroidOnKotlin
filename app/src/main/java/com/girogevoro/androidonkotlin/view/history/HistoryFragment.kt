@@ -1,4 +1,4 @@
-package com.girogevoro.androidonkotlin.view
+package com.girogevoro.androidonkotlin.view.history
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -7,16 +7,15 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.girogevoro.androidonkotlin.R
-import com.girogevoro.androidonkotlin.databinding.HistoryFragmentBinding
+import com.girogevoro.androidonkotlin.databinding.FragmentHistoryBinding
+import com.girogevoro.androidonkotlin.model.data.AppState
 import com.girogevoro.androidonkotlin.utils.hide
 import com.girogevoro.androidonkotlin.utils.show
 import com.girogevoro.androidonkotlin.utils.showSnackBar
-import com.girogevoro.androidonkotlin.viewmodel.HistoryViewModel
-import com.girogevoro.androidonkotlin.viewmodel.data.AppState
 
 class HistoryFragment : Fragment() {
 
-    private var _binding: HistoryFragmentBinding? = null
+    private var _binding: FragmentHistoryBinding? = null
     private val binding get() = _binding!!
     private val viewModel: HistoryViewModel by lazy {
         ViewModelProvider(this).get(HistoryViewModel::class.java)
@@ -31,7 +30,7 @@ class HistoryFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = HistoryFragmentBinding.inflate(inflater, container, false)
+        _binding = FragmentHistoryBinding.inflate(inflater, container, false)
         return binding.root
     }
 

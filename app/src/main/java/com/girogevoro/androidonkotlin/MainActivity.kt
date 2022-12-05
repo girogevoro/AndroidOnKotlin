@@ -1,4 +1,4 @@
-package com.girogevoro.androidonkotlin.view
+package com.girogevoro.androidonkotlin
 
 import android.content.Intent
 import android.content.IntentFilter
@@ -6,9 +6,12 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
-import com.girogevoro.androidonkotlin.R
 import com.girogevoro.androidonkotlin.databinding.ActivityMainBinding
 import com.girogevoro.androidonkotlin.domain.ConnectivityBroadcastReceiver
+import com.girogevoro.androidonkotlin.view.contacts.ContactsFragment
+import com.girogevoro.androidonkotlin.view.history.HistoryFragment
+import com.girogevoro.androidonkotlin.view.weatherlist.WeatherListFragment
+import javax.xml.datatype.DatatypeFactory.newInstance
 
 private val receiver = ConnectivityBroadcastReceiver()
 
@@ -36,7 +39,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return when(item.itemId) {
+        return when (item.itemId) {
             R.id.menu_history -> {
                 supportFragmentManager.apply {
                     beginTransaction()
@@ -46,6 +49,15 @@ class MainActivity : AppCompatActivity() {
                 }
                 true
             }
+            R.id.meny_contacts ->{
+                supportFragmentManager.apply {
+                    beginTransaction().add(R.id.container, ContactsFragment.newInstance())
+                        .addToBackStack("")
+                        .commitAllowingStateLoss()
+                }
+                true
+            }
+
             else -> super.onOptionsItemSelected(item)
         }
     }

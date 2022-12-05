@@ -1,4 +1,4 @@
-package com.girogevoro.androidonkotlin.view
+package com.girogevoro.androidonkotlin.view.weatherlist
 
 import android.content.Context
 import android.os.Bundle
@@ -9,12 +9,10 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.girogevoro.androidonkotlin.R
 import com.girogevoro.androidonkotlin.databinding.FragmentWeatherListBinding
-import com.girogevoro.androidonkotlin.domain.Weather
 import com.girogevoro.androidonkotlin.model.Location
-import com.girogevoro.androidonkotlin.viewmodel.WeatherListViewModel
-import com.girogevoro.androidonkotlin.viewmodel.data.AppState
+import com.girogevoro.androidonkotlin.model.data.AppState
+import com.girogevoro.androidonkotlin.view.weatherdetails.DetailsFragment
 import com.google.android.material.snackbar.Snackbar
-import com.google.gson.annotations.Until
 
 private const val IS_RUSSIAN_KEY = "LIST_OF_RUSSIAN_KEY"
 
@@ -122,10 +120,10 @@ class WeatherListFragment : Fragment() {
 
 
 
-    fun View.snackbar(message:String, duratinon:Int){
-        Snackbar.make(this, message ,duratinon).show()
+    fun View.snackbar(message:String, duration:Int){
+        Snackbar.make(this, message ,duration).show()
     }
-    fun View.snackbar(message:Int, duratinon:Int){
-        Snackbar.make(this, message ,duratinon).show()
+    fun View.snackbar(message:Int, duration:Int){
+        Snackbar.make(this, message ,duration).show()
     }
 }
