@@ -13,6 +13,7 @@ import android.location.LocationListener
 import android.location.LocationManager
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.EditText
@@ -32,6 +33,8 @@ import com.girogevoro.androidonkotlin.view.contacts.ContactsFragment
 import com.girogevoro.androidonkotlin.view.history.HistoryFragment
 import com.girogevoro.androidonkotlin.view.weatherdetails.DetailsFragment
 import com.girogevoro.androidonkotlin.view.weatherlist.WeatherListFragment
+import com.google.android.gms.tasks.OnCompleteListener
+import com.google.firebase.messaging.FirebaseMessaging
 import java.io.IOException
 
 private val receiver = ConnectivityBroadcastReceiver()
@@ -39,8 +42,8 @@ private const val REFRESH_PERIOD = 60000L
 private const val MINIMAL_DISTANCE = 100f
 
 
-private val CHANNEL_HIGH_ID = "channel_we3tw43"
-private val NOTIFICATION_ID1 = 1
+val CHANNEL_HIGH_ID = "channel_"
+val NOTIFICATION_ID1 = 1
 
 class MainActivity : AppCompatActivity() {
 
@@ -60,7 +63,17 @@ class MainActivity : AppCompatActivity() {
 
         registerReceiver(receiver, IntentFilter(Intent.ACTION_AIRPLANE_MODE_CHANGED))
 
-        pushNotification("title", "body")
+
+        FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener { task ->
+            if (!task.isSuccessful) {
+                Log.w("@@@", "Fetching FCM registration token failed", task.exception)
+                return@OnCompleteListener
+            }
+            val token = task.result
+            pushNotification("token", " ----=$token=----")
+            Log.d("@@@", token)
+        })
+
 
     }
 
