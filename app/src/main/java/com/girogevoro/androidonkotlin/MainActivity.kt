@@ -1,6 +1,8 @@
 package com.girogevoro.androidonkotlin
 
 import android.Manifest
+import android.app.NotificationChannel
+import android.app.NotificationManager
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
@@ -9,6 +11,7 @@ import android.location.Geocoder
 import android.location.Location
 import android.location.LocationListener
 import android.location.LocationManager
+import android.os.Build
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
@@ -19,6 +22,7 @@ import android.widget.TextView
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.NotificationCompat
 import androidx.core.content.ContextCompat
 import com.girogevoro.androidonkotlin.databinding.ActivityMainBinding
 import com.girogevoro.androidonkotlin.domain.City
@@ -33,6 +37,10 @@ import java.io.IOException
 private val receiver = ConnectivityBroadcastReceiver()
 private const val REFRESH_PERIOD = 60000L
 private const val MINIMAL_DISTANCE = 100f
+
+
+private val CHANNEL_HIGH_ID = "channel_we3tw43"
+private val NOTIFICATION_ID1 = 1
 
 class MainActivity : AppCompatActivity() {
 
@@ -51,6 +59,34 @@ class MainActivity : AppCompatActivity() {
                 .replace(R.id.container, WeatherListFragment.newInstance()).commit()
 
         registerReceiver(receiver, IntentFilter(Intent.ACTION_AIRPLANE_MODE_CHANGED))
+
+        pushNotification("title", "body")
+
+    }
+
+
+    private fun pushNotification(title: String, body: String) {
+
+        val notificationManager =
+            getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        val notification = NotificationCompat.Builder(this, CHANNEL_HIGH_ID).apply {
+            setContentTitle(title)
+            setContentText(body)
+            setSmallIcon(R.drawable.ic_launcher_background)
+            priority = NotificationCompat.PRIORITY_MAX
+        }
+
+        if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.O) {
+            val channelHigh = NotificationChannel(
+                CHANNEL_HIGH_ID,
+                CHANNEL_HIGH_ID,
+                NotificationManager.IMPORTANCE_HIGH
+            )
+            channelHigh.description = "Канал  для сообщений"
+            notificationManager.createNotificationChannel(channelHigh)
+        }
+
+        notificationManager.notify(NOTIFICATION_ID1,notification.build())
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -199,7 +235,8 @@ class MainActivity : AppCompatActivity() {
         val geocoder = Geocoder(context)
         Thread {
             try {
-                val addresses = geocoder.getFromLocation(location.latitude, location.longitude, 1)
+                val addresses =
+                    geocoder.getFromLocation(location.latitude, location.longitude, 1)
                 binding.root.post {
                     showAddressDialog(addresses[0].getAddressLine(0), location)
                 }
