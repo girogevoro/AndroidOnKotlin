@@ -8,11 +8,6 @@
         android:title="@string/menu_title_history"
         app:showAsAction="always" />
     <item
-        android:id="@+id/menu_contacts"
-        android:icon="@android:drawable/ic_dialog_email"
-        android:title="@string/contacts"
-        app:showAsAction="ifRoom" />
-    <item
         android:id="@+id/menu_find"
         android:icon="@android:drawable/ic_menu_add"
         android:title="@string/weather"

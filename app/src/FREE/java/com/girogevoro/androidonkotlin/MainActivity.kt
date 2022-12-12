@@ -118,14 +118,6 @@ class MainActivity : AppCompatActivity() {
                 }
                 true
             }
-            R.id.menu_contacts -> {
-                supportFragmentManager.apply {
-                    beginTransaction().add(R.id.container, ContactsFragment.newInstance())
-                        .addToBackStack("")
-                        .commitAllowingStateLoss()
-                }
-                true
-            }
             R.id.menu_find -> {
                 checkPermission()
                 true

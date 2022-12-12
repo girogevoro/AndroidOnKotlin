@@ -19,30 +19,97 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
+
+    signingConfigs {
+        staging {
+            Properties properties = new Properties()
+            properties.load(rootProject.file("passwordStaging.properties").newDataInputStream())
+            def _storePassword = properties.getProperty("storePassword")
+            def _keyAlias = properties.getProperty("keyAlias")
+            def _keyPassword = properties.getProperty("keyPassword")
+
+            storeFile file("staging.jks")
+            storePassword = _storePassword
+            keyAlias = _keyAlias
+            keyPassword = _keyPassword
+
+        }
+
+        release {
+            Properties properties = new Properties()
+            properties.load(rootProject.file("passwordRelease.properties").newDataInputStream())
+
+            def _storePassword = properties.getProperty("storePassword")
+            def _keyAlias = properties.getProperty("keyAlias")
+            def _keyPassword = properties.getProperty("keyPassword")
+
+            storeFile file("release.jks")
+            storePassword = _storePassword
+            keyAlias = _keyAlias
+            keyPassword = _keyPassword
+
+        }
+    }
+
     buildTypes.each {
         Properties properties = new Properties()
         properties.load(project.rootProject.file("apikey.properties").newDataInputStream())
-        def apiKey  = properties.getProperty("yandex_weather_api_key", "")
+        def apiKey = properties.getProperty("yandex_weather_api_key", "")
         it.buildConfigField "String", "WEATHER_API_KEY", apiKey
+        System.out.println("123")
     }
 
+    buildTypes {
+
+        staging {
+            initWith debug
+            signingConfig = signingConfigs.staging
+            multiDexEnabled true // больше 65536 методов
+            minifyEnabled true
+            versionNameSuffix "-staging"
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            buildConfigField "String", "TYPE", '"STAGING"'
+
+        }
+
+        debug {
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            versionNameSuffix "-debug"
+            buildConfigField "String", "TYPE", '"DEBUG"'
+
+        }
+
+        release {
+            minifyEnabled false
+            signingConfig = signingConfigs.release
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            buildConfigField "String", "TYPE", '"RELEASE"'
+        }
+    }
 
     buildFeatures {
         viewBinding true
     }
 
-    buildTypes {
-        release {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-        }
-    }
+
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
-}
 
+    flavorDimensions 'version'
+    productFlavors {
+        PRO {
+            dimension 'version'
+        }
+        FREE {
+            dimension 'version'
+        }
+    }
+
+}
 
 dependencies {
 
@@ -77,5 +144,6 @@ dependencies {
     implementation 'com.google.firebase:firebase-messaging-ktx:23.0.6'
 
 }
+
 
 apply plugin: 'com.google.gms.google-services'
